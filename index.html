@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciador de  tarefas</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="logo">CADCHORE</div>
+    <div class="input_group">
+      <input class="input_field" id="title_input" type="text" placeholder="Tarefa">
+      <input class="input_field" id="description_input" type="text" placeholder="Descrição">
+      <select class="input_field" name="" id="select_status">
+        <option value="" selected disabled>Status</option>
+        <option value="pendente">Pendente</option>
+        <option value="em_andamento">Em andamento</option>
+        <option value="concluida">Concluída</option>
+      </select>
+      <button class="btn" type="button" id="btn_cadastro">Cadastrar</button>
+    </div>
+
+    <div id="listaTarefas"></div>
+
+  </div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>

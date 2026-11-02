@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  color: blue;
+  font-size: 38px;
+}
+
+.input_group {
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+}
+
+.input_field {
+  background-color: rgba(0, 0, 255, 0.086);
+  border: 1px solid blue;
+  font-size: 17px;
+  color: black;
+  padding: 5px 12px;
+  border-radius: 6px;
+}
+
+.btn {
+  padding: 5px 12px;
+  background-color: blue;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+}
+
+.tarefa_show {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px;
+  margin-top: 8px;
+  background-color: #0000ff0a;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.titulo_tarefa {
+  margin-bottom: 5px;
+}
+
+.divs-style {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+
+  & img {
+    width: 26px;
+  }
+}
