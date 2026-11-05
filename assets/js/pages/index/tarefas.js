@@ -1,12 +1,3 @@
-import { buscarDados } from "./buscarDados.js";
-import { excluirTarefa } from "./excluirTarefa.js";
-
-window.onload = listarTarefas
-
-let btn_cadastrar = document.getElementById("btn_cadastro");
-
-btn_cadastrar.addEventListener("click", cadastrarTarefa);
-
 class Tarefa {
   constructor(id, titulo, descricao, status) {
     this.id = id;
@@ -17,8 +8,9 @@ class Tarefa {
 }
 
 let tarefas = [];
-function cadastrarTarefa() {
-  let ultimoId = localStorage.getItem('ultimoId');
+//Função que cadastra a tarefa no localstorage
+export function cadastrarTarefa() {
+  let ultimoId = localStorage.getItem("ultimoId");
   ultimoId = Number(JSON.parse(ultimoId));
   //Puxo os valores dos inputs
   let titulo = document.getElementById("title_input");
@@ -46,7 +38,7 @@ function cadastrarTarefa() {
     status.value,
   );
   console.log(ultimoId);
-  
+
   tarefas.push(tarefa);
   localStorage.setItem("ultimoId", JSON.stringify(ultimoId));
 
@@ -60,6 +52,7 @@ function cadastrarTarefa() {
   listarTarefas();
 }
 
+//Função que cria os elementos de listar tarefas em html e lista as tarefas
 export function listarTarefas() {
   let listaTarefas = document.getElementById("listaTarefas");
   listaTarefas.textContent = "";
@@ -70,7 +63,7 @@ export function listarTarefas() {
     divTarefa.className = "tarefa_show";
     let divTd = document.createElement("div");
     let divS = document.createElement("div");
-    divS.className = 'divs-style'
+    divS.className = "divs-style";
 
     let titulo = document.createElement("h3");
     titulo.textContent = tarefa.titulo;
@@ -81,27 +74,12 @@ export function listarTarefas() {
     descricao.textContent = tarefa.descricao;
     divTd.appendChild(descricao);
 
-    let excluir = document.createElement('img');
-    excluir.src = 'icons8-lixo.svg';
-
+    let excluir = document.createElement("img");
+    excluir.src = "icons8-lixo.svg";
 
     let status = document.createElement("p");
 
-    // let statusFormatado =
-
-    // switch (statusFormatado) {
-    //   case "pendente":
-    //     statusFormatado = "Pendente";
-    //     break;
-    //   case "em_andamento":
-    //     statusFormatado = "Em andamento";
-    //     break;
-    //   case "concluida":
-    //     statusFormatado = "Concluída";
-    //     break;
-    // }
-
-    status.appendChild(CriarStatusNaLista(tarefa.status));
+    status.appendChild(CriarStatusNaLista(tarefa.status, tarefa.id));
     divS.appendChild(status);
     divS.appendChild(excluir);
     divTarefa.appendChild(divTd);
@@ -112,8 +90,11 @@ export function listarTarefas() {
   });
 }
 
-function CriarStatusNaLista(status) {
+// Função que cria o select de Status na tarefa
+function CriarStatusNaLista(status, id) {
   let select = document.createElement("select");
+  select.className = "select_tarefa input_field";
+  select.dataset.id = id;
 
   let statusDisponiveis = ["pendente", "em_andamento", "concluida"];
 
@@ -140,3 +121,41 @@ function CriarStatusNaLista(status) {
   return select;
 }
 
+//Função que exclui uma tarefa e atualiza o local Storage
+function excluirTarefa(excluir, tarefa_id, tarefas_lista) {
+  excluir.addEventListener("click", () => {
+    let tarefasAtualizadas = tarefas_lista.filter((tarefa) => {
+      return tarefa.id !== tarefa_id;
+    });
+
+    localStorage.setItem("tarefas", JSON.stringify(tarefasAtualizadas));
+    listarTarefas();
+  });
+}
+
+//Função que muda os Status da tarefa no local Storage
+export function trocarStatus(event) {
+  let eventoAlterado = event.target.value;
+  let id = Number(event.target.dataset.id);
+  let tarefas = JSON.parse(localStorage.getItem("tarefas"));
+
+  tarefas.find((tarefa) => {
+    if (tarefa.id === id) {
+      tarefa.status = eventoAlterado;
+      return true;
+    }
+  });
+
+  localStorage.setItem("tarefas", JSON.stringify(tarefas));
+}
+
+//Fução que busca os dados no localStorage para a outra função listarTarefas
+function buscarDados() {
+  let tarefas = localStorage.getItem("tarefas");
+  if (tarefas) {
+    tarefas = JSON.parse(tarefas);
+    return tarefas;
+  } else {
+    return [];
+  }
+}
