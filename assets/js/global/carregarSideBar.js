@@ -1,4 +1,4 @@
-async function carregarSideBar() {
+export async function carregarSideBar() {
   const resposta = await fetch("../../../sidebar.html");
   const html = await resposta.text();
 
@@ -7,4 +7,4 @@ async function carregarSideBar() {
   sidebar.innerHTML = html;
 }
 
-carregarSideBar()
+carregarSideBar();

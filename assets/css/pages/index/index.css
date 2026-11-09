@@ -1,2 +1,36 @@
 @import '../../global/global.css';
 @import '../../style.css';
+@import './partials/campo-cadastrar-tarefa.css';
+@import './partials/resumo_tarefas.css';
+@import 'partials/lista_tarefas.css';
+@import 'partials/popup_editar.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 0px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  color: blue;
+  font-size: 38px;
+}
+
+.header h1 {
+  font: var(--h1);
+  color: black;
+}
+
+.header p {
+  font: var(--p);
+  color: #3D3E3F;
+}

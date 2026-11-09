@@ -1,0 +1,70 @@
+.top_lista_tarefas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  margin-top: 30px;
+}
+
+.top_lista_tarefas div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #545662;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; 
+}
+
+thead {
+  background-color: #ECEFF6;
+  height: 40px;
+  border-radius: 10px;
+  
+}
+
+thead th {
+  text-align: left;
+  padding: 10px;
+  color: #8A90A0;
+}
+
+tbody tr {
+  
+}
+
+tbody tr td{
+  text-align: left;
+  padding: 10px;
+  color: #63646D;
+}
+
+.name_tarefa {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  color: #63646D;
+}
+
+.name_tarefa strong {
+  font-size: 18px;
+}
+
+tbody .prazo_tarefa {
+  color: #C6945E;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+tbody img {
+  width: 45px;
+  cursor: pointer;
+}
+
+tbody .icon_tarefa img{
+  display: block;
+  margin-left: auto;
+}

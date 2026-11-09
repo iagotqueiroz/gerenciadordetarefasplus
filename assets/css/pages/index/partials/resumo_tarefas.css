@@ -1,0 +1,45 @@
+.resumo_tarefas {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+
+  margin-bottom: 30px;
+}
+
+.reumo_tarefas_item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 2px solid #EDEEF0;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.reumo_tarefas_item div {
+  display: flex;
+  gap: 8px;
+}
+
+.reumo_tarefas_item-top img {
+  width: 14px;
+}
+
+.reumo_tarefas_item-top p {
+  font-size: 14px;
+  font-weight: 700;
+  color: #73757F;
+}
+
+.reumo_tarefas_item-bottom {
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.reumo_tarefas_item-bottom span {
+  font-size: 50px;
+  font-weight: 600;
+}
+
+.reumo_tarefas_item-bottom img{
+  width: 30px;
+}

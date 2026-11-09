@@ -1,9 +1,10 @@
 class Tarefa {
-  constructor(id, titulo, descricao, status) {
+  constructor(id, titulo, descricao, status, date) {
     this.id = id;
     this.titulo = titulo;
     this.descricao = descricao;
     this.status = status;
+    this.date = date;
   }
 }
 
@@ -16,10 +17,20 @@ export function cadastrarTarefa() {
   let titulo = document.getElementById("title_input");
   let descricao = document.getElementById("description_input");
   let status = document.getElementById("select_status");
+  let date = document.getElementById("prazo_input");
+  
+  let dataFormatada;
+  if (date.value) {
+    const [ano, mes, dia] = date.value.split('-').map(Number);
+    const dataLocal = new Date(ano, mes - 1, dia);
+    const formatador = new Intl.DateTimeFormat("pt-BR");
+    dataFormatada = formatador.format(dataLocal);
+  } else {
+    dataFormatada = 'Sem Data';
+  }
 
   // Verifico se o título está preenchido
   if (titulo.value.trim() === "") {
-    console.log("Titulo inválido!");
     return;
   }
   let tituloTratado = titulo.value.trim();
@@ -36,18 +47,18 @@ export function cadastrarTarefa() {
     tituloTratado,
     descricao.value,
     status.value,
+    dataFormatada,
   );
-  console.log(ultimoId);
-
+  tarefas = buscarDados();
   tarefas.push(tarefa);
   localStorage.setItem("ultimoId", JSON.stringify(ultimoId));
 
   localStorage.setItem("tarefas", JSON.stringify(tarefas));
-  console.log(localStorage.getItem("tarefas"));
 
   titulo.value = "";
   descricao.value = "";
   status.value = "";
+  date.value = "";
 
   listarTarefas();
 }
@@ -59,41 +70,39 @@ export function listarTarefas() {
 
   tarefas = buscarDados();
   tarefas.forEach((tarefa) => {
-    let divTarefa = document.createElement("div");
-    divTarefa.className = "tarefa_show";
-    let divTd = document.createElement("div");
-    let divS = document.createElement("div");
-    divS.className = "divs-style";
+    let status = CriarStatusNaLista(tarefa.status, tarefa.id);
+    status.className = "input_field select_tarefa";
+    let linha = document.createElement("tr");
+    linha.innerHTML = `
+                <td class="name_tarefa">
+                  <strong>${tarefa.titulo}</strong>
+                  <span>${tarefa.descricao}</span>
+                </td>
+                <td class="prazo_tarefa">${tarefa.date}</td>
+                <td class="status_tarefa">
+                
+                </td>
+                <td class="editar_tarefa icon_tarefa">
+                  <img src="assets/images/pages/index/edit-icon.svg" alt="" />
+                </td>
+                <td class="excluir_tarefa icon_tarefa">
+                  <img src="assets/images/pages/index/trash-icon.svg" alt="" />
+                </td>`;
+    linha.querySelector(".status_tarefa").appendChild(status);
 
-    let titulo = document.createElement("h3");
-    titulo.textContent = tarefa.titulo;
-    titulo.className = "titulo_tarefa";
-    divTd.appendChild(titulo);
-
-    let descricao = document.createElement("p");
-    descricao.textContent = tarefa.descricao;
-    divTd.appendChild(descricao);
-
-    let excluir = document.createElement("img");
-    excluir.src = "icons8-lixo.svg";
-
-    let status = document.createElement("p");
-
-    status.appendChild(CriarStatusNaLista(tarefa.status, tarefa.id));
-    divS.appendChild(status);
-    divS.appendChild(excluir);
-    divTarefa.appendChild(divTd);
-    divTarefa.appendChild(divS);
-    listaTarefas.appendChild(divTarefa);
+    listaTarefas.appendChild(linha);
+    let excluir = linha.querySelector(".excluir_tarefa");
 
     excluirTarefa(excluir, tarefa.id, tarefas);
   });
+
+  updateResumo();
+  contarTotalTarefas();
 }
 
 // Função que cria o select de Status na tarefa
 function CriarStatusNaLista(status, id) {
   let select = document.createElement("select");
-  select.className = "select_tarefa input_field";
   select.dataset.id = id;
 
   let statusDisponiveis = ["pendente", "em_andamento", "concluida"];
@@ -147,15 +156,55 @@ export function trocarStatus(event) {
   });
 
   localStorage.setItem("tarefas", JSON.stringify(tarefas));
+  updateResumo();
 }
 
 //Fução que busca os dados no localStorage para a outra função listarTarefas
-function buscarDados() {
+export function buscarDados() {
   let tarefas = localStorage.getItem("tarefas");
   if (tarefas) {
     tarefas = JSON.parse(tarefas);
     return tarefas;
   } else {
     return [];
+  }
+}
+
+let updatePendentes = 0;
+let updateEmAndamento = 0;
+let updateConcluidas = 0;
+
+function updateResumo() {
+  let update_pendente = document.getElementById("update_pendente");
+  let update_em_andamento = document.getElementById("update_em_andamento");
+  let update_concluida = document.getElementById("update_concluidas");
+
+  let tarefaJson = buscarDados();
+  updatePendentes = 0;
+  updateEmAndamento = 0;
+  updateConcluidas = 0;
+
+  tarefaJson.filter((tarefa) => {
+    if (tarefa.status === "em_andamento") {
+      updateEmAndamento += 1;
+    } else if (tarefa.status === "concluida") {
+      updateConcluidas += 1;
+    } else if (tarefa.status === "pendente") {
+      updatePendentes += 1;
+    }
+  });
+  update_pendente.textContent = updatePendentes;
+  update_em_andamento.textContent = updateEmAndamento;
+  update_concluida.textContent = updateConcluidas;
+}
+
+function contarTotalTarefas() {
+  let totalTarefaSpan = document.getElementById("total_tarefas");
+  let totalTarefas = buscarDados().length;
+
+  if (totalTarefas > 1) {
+    totalTarefaSpan.textContent = totalTarefas + ' Tarefas';
+  } else {
+    totalTarefaSpan.textContent = totalTarefas + " Tarefa";
   }
 }

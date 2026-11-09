@@ -3,6 +3,8 @@ import { iniciarEventosTarefa } from '../pages/index/tarefasEventos.js'
 
 import "../pages//index/tarefasEventos.js"
 import "./carregarSideBar.js";
+import "../pages/index/editarPopup.js";
 
 listarTarefas();
-iniciarEventosTarefa()
+iniciarEventosTarefa();
+

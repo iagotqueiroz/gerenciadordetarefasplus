@@ -1,33 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerenciador de  tarefas</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciador de tarefas</title>
 
-  <link rel="stylesheet" href="/assets/css/pages/index/index.css">
-</head>
-<body>
-  <div id="sidebar"></div>
+    <link rel="stylesheet" href="/assets/css/pages/index/index.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <div id="sidebar"></div>
+      <div id="popup_editar"></div>
 
-  <div class="container">
-    <div class="logo">CADCHORE</div>
-    <div class="input_group">
-      <input class="input_field" id="title_input" type="text" placeholder="Tarefa">
-      <input class="input_field" id="description_input" type="text" placeholder="Descrição">
-      <select class="input_field" name="" id="select_status">
-        <option value="" selected disabled>Status</option>
-        <option value="pendente">Pendente</option>
-        <option value="em_andamento">Em andamento</option>
-        <option value="concluida">Concluída</option>
-      </select>
-      <button class="btn" type="button" id="btn_cadastro">Cadastrar</button>
+      <div class="container">
+        <div class="header">
+          <h1>Tarefas</h1>
+          <p>Organize a produção e acompanhe cada etapa.</p>
+        </div>
+
+        <div class="resumo_tarefas">
+          <div class="reumo_tarefas_item">
+            <div class="reumo_tarefas_item-top">
+              <img src="assets/images/pages/index/pendente-icon.svg" alt="" />
+              <p>Pendentes</p>
+            </div>
+            <div class="reumo_tarefas_item-bottom">
+              <span id="update_pendente"></span>
+              <img
+                src="assets/images/pages/index/document-gray-icon.svg"
+                alt=""
+              />
+            </div>
+          </div>
+
+          <div class="reumo_tarefas_item">
+            <div class="reumo_tarefas_item-top">
+              <img
+                src="assets/images/pages/index/circle-azul-icon.svg"
+                alt=""
+              />
+              <p>Em andamento</p>
+            </div>
+            <div class="reumo_tarefas_item-bottom">
+              <span id="update_em_andamento"></span>
+              <img
+                src="assets/images/pages/index/em-andamento-icon.svg"
+                alt=""
+              />
+            </div>
+          </div>
+
+          <div class="reumo_tarefas_item">
+            <div class="reumo_tarefas_item-top">
+              <img
+                src="assets/images/pages/index/circle-verde-icon.svg"
+                alt=""
+              />
+              <p>Concluídas</p>
+            </div>
+            <div class="reumo_tarefas_item-bottom">
+              <span id="update_concluidas"></span>
+              <img
+                src="assets/images/pages/index/concluidas-check-icon.svg"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="input_group">
+          <h2>Adicionar tarefa</h2>
+          <form id="form_tarefa" class="form_main" action="">
+            <div class="form_group">
+              <label for="title_input">Tarefa</label>
+              <input
+                class="input_field"
+                id="title_input"
+                name="title_input"
+                type="text"
+                placeholder="O que precisa ser feito?"
+                required
+                maxlength="100"
+              />
+            </div>
+            <div class="form_group">
+              <label for="description_input">Descrição</label>
+              <input
+                class="input_field"
+                id="description_input"
+                name="description_input"
+                type="text"
+                placeholder="Detalhes (opcional)"
+                maxlength="300"
+              />
+            </div>
+
+            <div class="form_group">
+              <label for="prazo_input">Prazo</label>
+              <input
+                class="input_field"
+                id="prazo_input"
+                name="prazo_input"
+                type="date"
+                placeholder=""
+                maxlength="300"
+              />
+            </div>
+
+            <div class="form_group">
+              <label for="select_status">Status</label>
+              <select
+                class="input_field"
+                name="select_status"
+                id="select_status"
+              >
+                <option value="" selected disabled>Status</option>
+                <option value="pendente">Pendente</option>
+                <option value="em_andamento">Em andamento</option>
+                <option value="concluida">Concluída</option>
+              </select>
+            </div>
+
+            <button class="btn" type="submit" id="btn_cadastro">
+              + Adicionar
+            </button>
+          </form>
+        </div>
+
+        <div class="container_lista">
+          <div class="top_lista_tarefas">
+            <div>
+              <h2>Todas as tarefas</h2>
+              <span id="total_tarefas"></span>
+            </div>
+
+            <div>
+              <input
+                type="search"
+                id="busca"
+                name="q"
+                class="input_field"
+                placeholder="Buscar tarefa..."
+              />
+              <select
+                class="input_field"
+                name="select_status"
+                id="select_status"
+              >
+                <option value="" selected disabled>Todos os status</option>
+                <option value="pendente">Pendente</option>
+                <option value="em_andamento">Em andamento</option>
+                <option value="concluida">Concluída</option>
+              </select>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>TAREFA</th>
+                <th>PRAZO</th>
+                <th>STATUS</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody id="listaTarefas">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <div id="listaTarefas"></div>
-
-  </div>
-
-  <script src="assets/js/global/app.js" type="module"></script>
-</body>
+    <script src="assets/js/global/app.js" type="module"></script>
+  </body>
 </html>

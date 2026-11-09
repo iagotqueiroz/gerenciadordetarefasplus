@@ -1,0 +1,163 @@
+
+/* Modal */
+.modal {
+  width: min(480px, 92%);
+  max-height: 90vh;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+  /* Centralização */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  overflow-y: auto;
+}
+
+/* Fundo escurecido */
+.modal::backdrop {
+  background: rgba(15, 23, 42, 0.65);
+}
+
+/* Conteúdo */
+.modal_conteudo {
+  padding: 28px;
+}
+
+/* Cabeçalho */
+.modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.modal_header h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.modal_header p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.btn_fechar {
+  border: none;
+  background: transparent;
+  font-size: 26px;
+  color: #64748b;
+  cursor: pointer;
+}
+
+/* Formulário */
+.modal_form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form_group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.form_group label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form_group input,
+.form_group textarea,
+.form_group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  font: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form_group input:focus,
+.form_group textarea:focus,
+.form_group select:focus {
+  border-color: #2563eb;
+}
+
+.form_group textarea {
+  resize: vertical;
+}
+
+/* Data e status lado a lado */
+.form_linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Botões */
+.modal_footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.modal_footer button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn_cancelar {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.btn_cancelar:hover {
+  background: #e2e8f0;
+}
+
+.btn_salvar {
+  background: #2563eb;
+  color: white;
+}
+
+.btn_salvar:hover {
+  background: #1d4ed8;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .modal_conteudo {
+    padding: 20px;
+  }
+
+  .form_linha {
+    grid-template-columns: 1fr;
+  }
+
+  .modal_footer {
+    flex-direction: column-reverse;
+  }
+
+  .modal_footer button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,81 @@
+<dialog id="modalEditar" class="modal">
+  <div class="modal_conteudo">
+
+    <div class="modal_header">
+      <div>
+        <h2>Editar tarefa</h2>
+        <p>Atualize as informações da sua tarefa.</p>
+      </div>
+
+      <button
+        type="button"
+        class="btn_fechar"
+        id="fecharModal"
+        aria-label="Fechar"
+      >
+        &times;
+      </button>
+    </div>
+
+    <form id="formEditar" class="modal_form">
+
+      <div class="form_group">
+        <label for="editar_titulo">Título</label>
+        <input
+          type="text"
+          id="editar_titulo"
+          name="titulo"
+          placeholder="Título da tarefa"
+          maxlength="100"
+          required
+        />
+      </div>
+
+      <div class="form_group">
+        <label for="editar_descricao">Descrição</label>
+        <textarea
+          id="editar_descricao"
+          name="descricao"
+          placeholder="Descrição da tarefa"
+          rows="4"
+          maxlength="300"
+        ></textarea>
+      </div>
+
+      <div class="form_linha">
+        <div class="form_group">
+          <label for="editar_prazo">Data</label>
+          <input
+            type="date"
+            id="editar_prazo"
+            name="prazo"
+          />
+        </div>
+
+        <div class="form_group">
+          <label for="editar_status">Status</label>
+          <select id="editar_status" name="status">
+            <option value="pendente">Pendente</option>
+            <option value="em_andamento">Em andamento</option>
+            <option value="concluida">Concluído</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal_footer">
+        <button
+          type="button"
+          class="btn_cancelar"
+          id="cancelarEdicao"
+        >
+          Cancelar
+        </button>
+
+        <button id="salvarAlteracoes" type="submit" class="btn_salvar">
+          Salvar alterações
+        </button>
+      </div>
+
+    </form>
+  </div>
+</dialog>
