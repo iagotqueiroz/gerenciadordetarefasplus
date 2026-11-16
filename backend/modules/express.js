@@ -32,6 +32,49 @@ app.get("/tarefas", async (req, res) => {
   }
 });
 
+app.patch("/tarefa/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log("id recebido:", id);
+    const { titulo, descricao, status, date } = req.body;
+    const atualizacoes = {
+      titulo,
+      descricao,
+      status,
+      date,
+    };
+
+    const tarefasAtualizadas = await TarefaModel.findByIdAndUpdate(
+      id,
+      {
+        $set: atualizacoes,
+      },
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    );
+
+    return res.status(200).json(tarefasAtualizadas);
+  } catch (error) {
+    res.status(400).json({
+      mensagem: "Erro ao atualizar tarefa",
+    });
+  }
+});
+
+app.delete("/tarefa/:id", async (req, res) => {
+  try {
+    const deleteTarefa = await TarefaModel.findByIdAndDelete(req.params.id);
+    return res.status(200).json({ error: "usuário deletado com sucesso" });
+  } catch (error) {
+    return res.status(400).json({
+      mensagem: "Erro ao apagar tarefa",
+      user: deleteTarefa,
+    });
+  }
+});
+
 // app.get("/users", async (req, res) => {
 //   try {
 //     const users = await UserModel.find({});

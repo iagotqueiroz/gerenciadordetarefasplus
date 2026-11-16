@@ -1,6 +1,5 @@
 class Tarefa {
-  constructor(id, titulo, descricao, status, date) {
-    this.id = id;
+  constructor(titulo, descricao, status, date) {
     this.titulo = titulo;
     this.descricao = descricao;
     this.status = status;
@@ -43,7 +42,6 @@ export async function cadastrarTarefa() {
   ultimoId += 1;
   //crio uma nova instância da classe Tarefa
   let tarefa = new Tarefa(
-    ultimoId,
     tituloTratado,
     descricao.value,
     status.value,
@@ -60,6 +58,9 @@ export async function cadastrarTarefa() {
     });
 
     const dados = await resposta.json();
+
+    console.log("Status:", resposta.status);
+    console.log("Resposta do servidor:", dados);
   } catch (error) {
     console.log("Erro de conexão com o servidor:", error);
   }
@@ -86,7 +87,7 @@ export async function listarTarefas(tarefasFiltradas = null) {
   listaTarefas.textContent = "";
 
   tarefas.forEach((tarefa) => {
-    let status = CriarStatusNaLista(tarefa.status, tarefa.id);
+    let status = CriarStatusNaLista(tarefa.status, tarefa._id);
     status.className = "input_field select_tarefa";
     let linha = document.createElement("tr");
     linha.innerHTML = `
@@ -109,7 +110,7 @@ export async function listarTarefas(tarefasFiltradas = null) {
     listaTarefas.appendChild(linha);
     let excluir = linha.querySelector(".excluir_tarefa");
 
-    excluirTarefa(excluir, tarefa.id, tarefas);
+    excluirTarefa(excluir, tarefa._id, tarefas);
   });
 
   updateResumo();
@@ -119,6 +120,7 @@ export async function listarTarefas(tarefasFiltradas = null) {
 // Função que cria o select de Status na tarefa
 function CriarStatusNaLista(status, id) {
   let select = document.createElement("select");
+  select.disabled = true;
   select.dataset.id = id;
 
   let statusDisponiveis = ["pendente", "em_andamento", "concluida"];
@@ -150,7 +152,7 @@ function CriarStatusNaLista(status, id) {
 function excluirTarefa(excluir, tarefa_id, tarefas_lista) {
   excluir.addEventListener("click", () => {
     let tarefasAtualizadas = tarefas_lista.filter((tarefa) => {
-      return tarefa.id !== tarefa_id;
+      return tarefa._id !== tarefa_id;
     });
 
     localStorage.setItem("tarefas", JSON.stringify(tarefasAtualizadas));
@@ -165,7 +167,7 @@ export function trocarStatus(event) {
   let tarefas = JSON.parse(localStorage.getItem("tarefas"));
 
   tarefas.find((tarefa) => {
-    if (tarefa.id === id) {
+    if (tarefa._id === id) {
       tarefa.status = eventoAlterado;
       return true;
     }
