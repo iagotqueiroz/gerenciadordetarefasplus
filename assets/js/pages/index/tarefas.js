@@ -10,7 +10,7 @@ class Tarefa {
 
 let tarefas = [];
 //Função que cadastra a tarefa no localstorage
-export function cadastrarTarefa() {
+export async function cadastrarTarefa() {
   let ultimoId = localStorage.getItem("ultimoId");
   ultimoId = Number(JSON.parse(ultimoId));
   //Puxo os valores dos inputs
@@ -18,15 +18,15 @@ export function cadastrarTarefa() {
   let descricao = document.getElementById("description_input");
   let status = document.getElementById("select_status");
   let date = document.getElementById("prazo_input");
-  
+
   let dataFormatada;
   if (date.value) {
-    const [ano, mes, dia] = date.value.split('-').map(Number);
+    const [ano, mes, dia] = date.value.split("-").map(Number);
     const dataLocal = new Date(ano, mes - 1, dia);
     const formatador = new Intl.DateTimeFormat("pt-BR");
     dataFormatada = formatador.format(dataLocal);
   } else {
-    dataFormatada = 'Sem Data';
+    dataFormatada = "Sem Data";
   }
 
   // Verifico se o título está preenchido
@@ -49,8 +49,20 @@ export function cadastrarTarefa() {
     status.value,
     dataFormatada,
   );
-  tarefas = buscarDados();
-  tarefas.push(tarefa);
+
+  try {
+    const resposta = await fetch("http://localhost:8080/tarefas/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tarefa),
+    });
+
+    const dados = await resposta.json();
+  } catch (error) {
+    console.log("Erro de conexão com o servidor:", error);
+  }
   localStorage.setItem("ultimoId", JSON.stringify(ultimoId));
 
   localStorage.setItem("tarefas", JSON.stringify(tarefas));
@@ -64,11 +76,15 @@ export function cadastrarTarefa() {
 }
 
 //Função que cria os elementos de listar tarefas em html e lista as tarefas
-export function listarTarefas() {
+export async function listarTarefas(tarefasFiltradas = null) {
+  if (tarefasFiltradas) {
+    tarefas = tarefasFiltradas;
+  } else {
+    tarefas = await buscarDados();
+  }
   let listaTarefas = document.getElementById("listaTarefas");
   listaTarefas.textContent = "";
 
-  tarefas = buscarDados();
   tarefas.forEach((tarefa) => {
     let status = CriarStatusNaLista(tarefa.status, tarefa.id);
     status.className = "input_field select_tarefa";
@@ -160,26 +176,22 @@ export function trocarStatus(event) {
 }
 
 //Fução que busca os dados no localStorage para a outra função listarTarefas
-export function buscarDados() {
-  let tarefas = localStorage.getItem("tarefas");
-  if (tarefas) {
-    tarefas = JSON.parse(tarefas);
-    return tarefas;
-  } else {
-    return [];
-  }
+export async function buscarDados() {
+  let tarefas = await fetch("http://localhost:8080/tarefas");
+  const dados = tarefas.json();
+  return dados;
 }
 
 let updatePendentes = 0;
 let updateEmAndamento = 0;
 let updateConcluidas = 0;
 
-function updateResumo() {
+async function updateResumo() {
   let update_pendente = document.getElementById("update_pendente");
   let update_em_andamento = document.getElementById("update_em_andamento");
   let update_concluida = document.getElementById("update_concluidas");
 
-  let tarefaJson = buscarDados();
+  let tarefaJson = await buscarDados();
   updatePendentes = 0;
   updateEmAndamento = 0;
   updateConcluidas = 0;
@@ -203,7 +215,7 @@ function contarTotalTarefas() {
   let totalTarefas = buscarDados().length;
 
   if (totalTarefas > 1) {
-    totalTarefaSpan.textContent = totalTarefas + ' Tarefas';
+    totalTarefaSpan.textContent = totalTarefas + " Tarefas";
   } else {
     totalTarefaSpan.textContent = totalTarefas + " Tarefa";
   }
