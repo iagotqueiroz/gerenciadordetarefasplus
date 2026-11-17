@@ -1,11 +1,19 @@
 const express = require("express");
 const TarefaModel = require("../src/models/tarefa.model");
 const cors = require("cors");
+const authRoutes = require("../src/routes/auth");
+const profileRoutes = require("../src/routes/profile");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
+
+app.get("/", (req, res) => {
+  res.status(200).json({ msg: "Bem vindo a nossa API" });
+});
 
 app.post("/tarefas", async (req, res) => {
   try {

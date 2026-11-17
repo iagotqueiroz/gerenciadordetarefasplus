@@ -150,12 +150,15 @@ function CriarStatusNaLista(status, id) {
 
 //Função que exclui uma tarefa e atualiza o local Storage
 function excluirTarefa(excluir, tarefa_id, tarefas_lista) {
-  excluir.addEventListener("click", () => {
-    let tarefasAtualizadas = tarefas_lista.filter((tarefa) => {
-      return tarefa._id !== tarefa_id;
-    });
-
-    localStorage.setItem("tarefas", JSON.stringify(tarefasAtualizadas));
+  excluir.addEventListener("click", async () => {
+    try {
+      const resposta = await fetch(`http://localhost:8080/tarefa/${tarefa_id}`, {
+        method: "DELETE",
+      })
+      
+    } catch (error) {
+      return res.status(500).json({ erro: 'Erro ao deletar tarefa' });
+    }
     listarTarefas();
   });
 }
@@ -212,9 +215,10 @@ async function updateResumo() {
   update_concluida.textContent = updateConcluidas;
 }
 
-function contarTotalTarefas() {
+async function contarTotalTarefas() {
   let totalTarefaSpan = document.getElementById("total_tarefas");
-  let totalTarefas = buscarDados().length;
+  let totalTarefas = (await buscarDados()).length;
+  console.log(totalTarefas)
 
   if (totalTarefas > 1) {
     totalTarefaSpan.textContent = totalTarefas + " Tarefas";
